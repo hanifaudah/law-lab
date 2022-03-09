@@ -45,7 +45,7 @@ def update_mahasiswa(mahasiswa: schemas.MahasiswaCreate, npm:str, db: Session = 
         raise HTTPException(status_code=400, detail="Mahasiswa not found")
     return crud.update_mahasiswa(db=db, mahasiswa=mahasiswa, db_mahasiswa=db_mahasiswa)
 
-@app.delete("/mahasiswa/")
+@app.delete("/mahasiswa/{npm}")
 def delete_mahasiswa(npm:str, db: Session = Depends(get_db)):
     db_mahasiswa = crud.get_mahasiswa_by_npm(db, npm=npm)
     if not db_mahasiswa:
