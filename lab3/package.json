@@ -1,0 +1,16 @@
+{
+  "name": "lab3",
+  "version": "1.0.0",
+  "description": "Eksplorasi lab3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hanif Arkan Audah",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  }
+}
