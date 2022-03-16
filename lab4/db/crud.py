@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from fastapi import UploadFile
 
 from . import models, schemas
 
@@ -33,3 +34,12 @@ def update_mahasiswa(db: Session, mahasiswa: schemas.MahasiswaCreate, db_mahasis
 def delete_mahasiswa(db: Session, mahasiswa: schemas.MahasiswaCreate):
     db.delete(mahasiswa)
     db.commit()
+
+def create_file(db: Session, file: UploadFile):
+    contents = file.file.read()
+    db_file = models.File(file=contents, file_name=file.filename)
+    db.add(db_file)
+    db.commit()
+    db.refresh(db_file)
+    return db_file
+

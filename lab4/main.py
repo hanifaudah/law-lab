@@ -1,6 +1,5 @@
 from typing import List
-
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, UploadFile
 
 # db
 from sqlalchemy.orm import Session
@@ -52,3 +51,8 @@ def delete_mahasiswa(npm:str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Mahasiswa not found")
     crud.delete_mahasiswa(db=db, mahasiswa=db_mahasiswa)
     return { "message": "Mahasiswa deleted" }
+
+@app.post("/files/")
+async def upload_file(file: UploadFile, db: Session = Depends(get_db)):
+    db_file = crud.create_file(db, file=file)
+    return {"filename": db_file.file_name}
