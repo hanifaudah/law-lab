@@ -3,7 +3,12 @@ from typing import Optional
 from fastapi import Body, FastAPI, Form
 from pydantic import BaseModel
 
-app = FastAPI()
+from os import getenv
+from dotenv import load_dotenv
+
+load_dotenv()
+
+app = FastAPI(root_path=getenv("ROOT_PATH"))
 
 
 @app.get("/")
