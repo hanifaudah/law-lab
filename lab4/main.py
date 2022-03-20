@@ -3,6 +3,7 @@ from os import getenv
 from dotenv import load_dotenv
 # db
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from db import crud, models, schemas
 from db.database import SessionLocal, engine
@@ -34,11 +35,11 @@ def read_mahasiswa_by_npm(npm:str, db: Session = Depends(get_db)):
 
 @app.post("/mahasiswa/", response_model=schemas.Mahasiswa)
 def create_mahasiswa(mahasiswa: schemas.MahasiswaCreate, db: Session = Depends(get_db)):
-    db_mahasiswa = crud.get_mahasiswa_by_npm(db, npm=mahasiswa.npm)
-    print("Hanif", db_mahasiswa)
-    if db_mahasiswa:
+    try:
+        db_mahasiswa = crud.create_mahasiswa(db=db, mahasiswa=mahasiswa)
+        return db_mahasiswa
+    except IntegrityError:
         raise HTTPException(status_code=400, detail="Mahasiswa already registered")
-    return crud.create_mahasiswa(db=db, mahasiswa=mahasiswa)
 
 @app.put("/mahasiswa/{npm}", response_model=schemas.Mahasiswa)
 def update_mahasiswa(mahasiswa: schemas.MahasiswaCreate, npm:str, db: Session = Depends(get_db)):
