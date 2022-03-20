@@ -33,8 +33,9 @@ def read_mahasiswa_by_npm(npm:str, db: Session = Depends(get_db)):
     return db_mahasiswa
 
 @app.post("/mahasiswa/", response_model=schemas.Mahasiswa)
-async def create_mahasiswa(mahasiswa: schemas.MahasiswaCreate, db: Session = Depends(get_db)):
-    db_mahasiswa = await crud.get_mahasiswa_by_npm(db, npm=mahasiswa.npm)
+def create_mahasiswa(mahasiswa: schemas.MahasiswaCreate, db: Session = Depends(get_db)):
+    db_mahasiswa = crud.get_mahasiswa_by_npm(db, npm=mahasiswa.npm)
+    print("Hanif", db_mahasiswa)
     if db_mahasiswa:
         raise HTTPException(status_code=400, detail="Mahasiswa already registered")
     return crud.create_mahasiswa(db=db, mahasiswa=mahasiswa)
